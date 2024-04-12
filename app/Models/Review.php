@@ -9,7 +9,7 @@ class Review extends Model
 {
     use HasFactory;
 
-    public function books() // the reverse side of the relation between books and reviews in Book model.
+    public function book() // the reverse side of the relation between books and reviews in Book model.
     {
         return $this->belongsTo(Book::class); // one to one relation ( each review -> one book ).
     }
