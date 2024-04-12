@@ -18,7 +18,7 @@ class Book extends Model
         return $this->hasMany(Review::class); // one to many relation (one book -> many reviews).
     }
 
-    public function scopeTitle(Builder $query, string $title) :Builder  // "Locale Query Scope" is a function that we writes querys (Query Builder querys) inside it then we use it when needed. 
+    public function scopeSearchTitle(Builder $query, string $title) :Builder  // "Local Query Scope" is a function that we writes querys (Query Builder querys) inside it then we use it when needed. 
     {   // Nameing convintion is important so we start with "scope" word then the actual name like (scopeTitle).
         return $query->where('title','like','%'. $title .'%');
     }
