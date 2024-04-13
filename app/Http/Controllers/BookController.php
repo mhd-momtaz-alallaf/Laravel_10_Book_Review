@@ -51,9 +51,20 @@ class BookController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Book $book)
     {
-        //
+        return view(
+            'books.show',
+            [
+                    // we will get all the reviews from the reviews relation and do somthing more on them..
+                    // in this case we will use local quary scope latest() to sort the results of reviews..
+                    // by chaining the latest() with $query, we will be working on reviews relation. 
+                
+                'book' => $book->load([ // model method that allow to load certain relations.
+                    'reviews' => fn($query) => $query->latest()
+                ])
+            ]
+        );
     }
 
     /**
