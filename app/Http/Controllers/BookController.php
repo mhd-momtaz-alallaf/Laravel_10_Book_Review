@@ -13,12 +13,21 @@ class BookController extends Controller
     public function index(Request $request)
     {
         $title = $request->input('title');
+        $filter = $request->input('filter', '');
 
         $books = Book::when(    // when is a codetional method that accepts a function to handel somthing for further querying, so if the first parameter ($title) is not empty or not null then it will run the function and filter books by title, otherwis it dosn't and it gets all the books.
             $title,
             fn($query, $title) => $query->searchTitle($title)
-        )
-            ->get();
+        );
+
+        $books = match ($filter) { // match is a statement like swich ( if key => do something) and default.
+            'popular_last_month' => $books->popularLastMonth(),
+            'popular_last_6months' => $books->popularLast6Months(),
+            'highest_rated_last_month' => $books->highestRatedLastMonth(),
+            'highest_rated_last_6months' => $books->highestRatedLast6Months(),
+            default => $books->latest() // sort by new books first
+        };
+        $books = $books->get();
 
         return view('books.index', ['books' => $books] );
     }
