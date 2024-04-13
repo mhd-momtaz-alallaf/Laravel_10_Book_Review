@@ -14,5 +14,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('/',function (){
+    return redirect()->route('books.index');
+});
 
 Route::resource('books',BookController::class); // the "Resource Controller" creates the http verbs and all routes of the resource ind its names as standerd way.

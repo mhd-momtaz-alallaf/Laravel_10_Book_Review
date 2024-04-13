@@ -24,19 +24,29 @@ class Book extends Model
         return $query->where('title','like','%'. $title .'%'); // quarying the titles that contains string "$title"
     }
 
-    public function scopePopular(Builder $query, $from = null, $to = null): Builder // | QueryBuilder
+    public function scopeWithReviewsCount(Builder $query, $from = null, $to = null): Builder|QueryBuilder
     {
         return $query->withCount([ //this will add a "reviews_count" colomn in the table 
             'reviews' => fn(Builder $q) => $this->dateRangeFilter($q, $from, $to)
-        ])
-            ->orderBy('reviews_count', 'desc'); // sort by "reviews_count"
+        ]);
     }
 
-    public function scopeHighestRated(Builder $query, $from = null, $to = null): Builder//| QueryBuilder
+    public function scopeWithAvgRating(Builder $query, $from = null, $to = null): Builder //|QueryBuilder
     {
         return $query->withAvg([ //this will add a "reviews_avg_rating" colomn in the table 
             'reviews' => fn(Builder $q) => $this->dateRangeFilter($q, $from, $to)
-        ], 'rating')
+        ], 'rating');
+    }
+
+    public function scopePopular(Builder $query, $from = null, $to = null): Builder //|QueryBuilder
+    {
+        return $query->withReviewsCount()
+            ->orderBy('reviews_count', 'desc'); // sort by "reviews_count"
+    }
+
+    public function scopeHighestRated(Builder $query, $from = null, $to = null): Builder //|QueryBuilder
+    {
+        return $query->withAvgRating()
             ->orderBy('reviews_avg_rating', 'desc'); // sort by "reviews_avg_rating"
     }
 

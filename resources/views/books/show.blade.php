@@ -20,24 +20,30 @@
   <div>
     <h2 class="mb-4 text-xl font-semibold">Reviews</h2>
     <ul>
-      @forelse ($book->reviews as $review) <!-- if the reviews relation not passed from the model, this will be lazy loading ( makeing a db quary with each review ) and that will couse a huge number of queries -->
-        <li class="book-item mb-4">        <!-- in this case the relation is fetched with the book from the model => just 1 more query -->
-          <div>
-            <div class="mb-2 flex items-center justify-between">
-              <div class="font-semibold">{{ $review->rating }}</div>
-              <div class="book-review-count">
-                {{ $review->created_at->format('M j, Y') }}</div>
+        @forelse ($book->reviews as $review) <!-- if the reviews relation not passed from the model, this will be lazy loading ( makeing a db quary with each review ) and that will couse a huge number of queries -->
+            <li class="book-item mb-4">        <!-- in this case the relation is fetched with the book from the model => just 1 more query -->
+            <div>
+                <div class="mb-2 flex items-center justify-between">
+                <div class="font-semibold">{{ $review->rating }}</div>
+                <div class="book-review-count">
+                    {{ $review->created_at->format('M j, Y') }}</div>
+                </div>
+                <p class="text-gray-700">{{ $review->review }}</p>
             </div>
-            <p class="text-gray-700">{{ $review->review }}</p>
-          </div>
-        </li>
-      @empty
+            </li>
+        @empty
         <li class="mb-4">
           <div class="empty-book-item">
             <p class="empty-text text-lg font-semibold">No reviews yet</p>
           </div>
         </li>
-      @endforelse
+        @endforelse
+
+        @if($book->reviews->count())
+            <nav class="mb-4">
+                {{ $book->reviews->links() }}
+            </nav>
+        @endif
     </ul>
   </div>
 @endsection
