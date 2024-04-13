@@ -14,7 +14,7 @@ class BookController extends Controller
     {
         $title = $request->input('title');
 
-        $books = Book::when(    // when is a codetional method that accepts a function to handel somthing for further querying, so if the first parameter ($title) is not empty or not null then it will run the function, otherwis it dosn't.
+        $books = Book::when(    // when is a codetional method that accepts a function to handel somthing for further querying, so if the first parameter ($title) is not empty or not null then it will run the function and filter books by title, otherwis it dosn't and it gets all the books.
             $title,
             fn($query, $title) => $query->searchTitle($title)
         )
