@@ -45,7 +45,8 @@
                     </div>
                     <div>
                     <div class="book-rating">
-                        {{ number_format($book->reviews_avg_rating, 1) }} <!-- this only will rendered if the attribute exist--> <!-- (, 1) means just 1 number after comma -->
+                        <!--{{ number_format($book->reviews_avg_rating, 1) }}--> <!-- this only will rendered if the attribute exist--> <!-- (, 1) means just 1 number after comma -->
+                        <x-star-rating :rating="$book->reviews_avg_rating"/> <!-- Component -->
                     </div>
                     <div class="book-review-count">
                         out of {{ $book->reviews_count }} {{ Str::plural('review',$book->review_count) }} <!-- 1 review - 2 reviews - 10 reviews -->

@@ -9,7 +9,7 @@
       <div class="book-rating flex items-center">
         <div class="flex space-x-2 mr-2 text-sm font-medium text-slate-700">
           <div>{{ number_format($book->reviews_avg_rating, 1) }}</div>
-            <div><x-star-rating :rating="$book->reviews_avg_rating"/></div>
+            <div><x-star-rating :rating="$book->reviews_avg_rating"/></div> <!-- Component -->
         </div>
         <span class="book-review-count text-sm text-gray-500 ">
           {{ $book->reviews_count }} {{ Str::plural('review', $book->reviews_count) }}
@@ -26,7 +26,7 @@
             <div>
                 <div class="mb-2 flex items-center justify-between">
                 <div class="font-semibold">
-                  <x-star-rating :rating="$review->rating"/>
+                  <x-star-rating :rating="$review->rating"/> <!-- Component -->
                 </div>
                 <div class="book-review-count">
                     {{ $review->created_at->format('M j, Y') }}</div>
