@@ -57,8 +57,9 @@ class BookController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Book $book) // if we want cache somthing and not querying it from tha database, we dont have to use the route model binding, we have to pass an $id and find the book by its id then deeling with cache function. 
-    {
+    public function show(Book $book) // if we want cache the book and not querying it from tha database, we dont have to use the route model binding, we have to pass an $id and find the book by its id then deeling with cache function. 
+    {   // here we just caching the reviews not the book.
+
         $cacheKey = 'book:' . $book->id;
 
         $book = cache()->remember($cacheKey, 3600, 
@@ -70,7 +71,8 @@ class BookController extends Controller
             // by chaining the latest() with $query, we will be working on reviews relation.
         ]) );
             // we just cached the reviews sorted by latest.
-            
+            // to delete the cached reviews we will deel with events in the reviews model.
+
         return view('books.show',['book' => $book]);
     }
 
