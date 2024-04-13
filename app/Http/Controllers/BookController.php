@@ -5,6 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Book;
 use Illuminate\Http\Request;
 
+
+// add laravel debugBar to the app => λ composer require barryvdh/laravel-debugbar --dev
+
+
 class BookController extends Controller
 {
     /**
@@ -27,7 +31,9 @@ class BookController extends Controller
             'highest_rated_last_6months' => $books->highestRatedLast6Months(),
             default => $books->latest() // sort by new books first
         };
-        $books = $books->get();
+
+        $cacheKey = 'books:' . $filter . ':' .$title; // dynamic cache key to store alote of quary states.
+        $books = cache()->remember($cacheKey , 3600 , fn() => $books->get() ); // to store somthing into cache we need a key and time to how long we will keep the data in cache (here its 1 hour) and the data we want to store.
 
         return view('books.index', ['books' => $books] );
     }
@@ -51,20 +57,21 @@ class BookController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Book $book)
+    public function show(Book $book) // if we want cache somthing and not querying it from tha database, we dont have to use the route model binding, we have to pass an $id and find the book by its id then deeling with cache function. 
     {
-        return view(
-            'books.show',
-            [
-                    // we will get all the reviews from the reviews relation and do somthing more on them..
-                    // in this case we will use local quary scope latest() to sort the results of reviews..
-                    // by chaining the latest() with $query, we will be working on reviews relation. 
-                
-                'book' => $book->load([ // model method that allow to load certain relations.
-                    'reviews' => fn($query) => $query->latest()
-                ])
-            ]
-        );
+        $cacheKey = 'book:' . $book->id;
+
+        $book = cache()->remember($cacheKey, 3600, 
+            fn() => $book->load([ // "load" its a model method that allow to load certain relations.
+            'reviews' => fn($query) => $query->latest()
+
+            // we will get all the reviews from the reviews relation and do somthing more on them..
+            // in this case we will use local quary scope latest() to sort the results of reviews..
+            // by chaining the latest() with $query, we will be working on reviews relation.
+        ]) );
+            // we just cached the reviews sorted by latest.
+            
+        return view('books.show',['book' => $book]);
     }
 
     /**
