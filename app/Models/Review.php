@@ -22,7 +22,7 @@ class Review extends Model
         
         static::updated( fn(Review $review) => cache()->forget('book:'.$review->book_id) ); // or $review->book->id but this will couse lazy louding because this will fetch the book model with the id and all its properties, so we simply have the colomn book_id in the reviews table and we can use it efficiently.
         static::deleted( fn(Review $review) => cache()->forget('book:'.$review->book_id) );
-        
+        static::created( fn(Review $review) => cache()->forget('book:'.$review->book_id) );
         // there are 3 setuations the event handler will not be triggered and its functions will not be called..
         //      1- when we edit the data directly from the database.
         //      2- when we use mass assignment(using update method with Query Biulder will not fetch the model, it will perform the query directly) like (Review::where('id',10)->update(['rating' => 3]) ) . the case of using model direct update like($review->update(['rating' => 3])) is fine and the cache will delete correctly because the event handler will normally called.

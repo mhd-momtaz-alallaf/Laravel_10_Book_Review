@@ -87,7 +87,7 @@ class BookController extends Controller
             // we just cached the reviews sorted by latest.
             // to delete the cached reviews we will deel with events in the reviews model.
 
-        $book->reviews = $book->reviews()->paginate(10);  
+        $book->reviews = $book->reviews()->latest()->paginate(10);  
         /*
             1-Accessing as Property "$book->reviews" (Without Parentheses):
               When you access a relationship as a property, Laravel automatically executes the relationship query and returns the result.
