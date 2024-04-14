@@ -28,6 +28,11 @@ class RouteServiceProvider extends ServiceProvider
             return Limit::perMinute(60)->by($request->user()?->id ?: $request->ip());
         });
 
+        // the group is reviews.
+        RateLimiter::for('reviews', function (Request $request) { // Rate Limiter is a middleware type ,to privent users to add like (100 review in short time) so we limit there ability to send reviews. 
+            return Limit::perHour(3)->by($request->user()?->id ?: $request->ip()); // set limiter to 3 reviews per hour. 
+        });
+
         $this->routes(function () {
             Route::middleware('api')
                 ->prefix('api')

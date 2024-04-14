@@ -7,6 +7,11 @@ use Illuminate\Http\Request;
 
 class ReviewController extends Controller
 {
+    public function __construct() // to define a middleware to specefic action for a resource controller, we have to define a constructor
+    {
+        $this->middleware('throttle:reviews')->only(['store']); // middleware name is throttle , but the group is reviews.
+    }
+
     /**
      * Display a listing of the resource.
      */
