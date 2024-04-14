@@ -9,13 +9,18 @@
       <div class="book-rating flex items-center">
         <div class="flex space-x-2 mr-2 text-sm font-medium text-slate-700">
           <div>{{ number_format($book->reviews_avg_rating, 1) }}</div>
-            <div><x-star-rating :rating="$book->reviews_avg_rating"/></div> <!-- Component -->
+          <div><x-star-rating :rating="$book->reviews_avg_rating"/></div> <!-- Component -->
         </div>
         <span class="book-review-count text-sm text-gray-500 ">
           {{ $book->reviews_count }} {{ Str::plural('review', $book->reviews_count) }}
         </span>
       </div>
     </div>
+  </div>
+
+  <div class="mb-4">
+    <a href="{{route('books.reviews.create',$book)}}" class="reset-link">
+      Add a Review!!</a>
   </div>
 
   <div>
