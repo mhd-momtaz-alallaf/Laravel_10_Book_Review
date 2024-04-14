@@ -35,7 +35,8 @@ class ReviewController extends Controller
 
         $book->reviews()->create($data); // mass assignment
 
-        return redirect()->route('books.show',$book);
+        return redirect()->route('books.show',$book)
+            ->with('success', 'Review Added successfully!');
     }
 
     /**

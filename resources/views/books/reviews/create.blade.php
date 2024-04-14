@@ -20,7 +20,7 @@
             <select name="rating" id="rating" class="input mb-4" 
                 @class(['border-red-500' => $errors->has('rating')]) >
                 <option value="">Select a Rating</option>
-                @for ($i = 0; $i <= 5; $i++)
+                @for ($i = 1; $i <= 5; $i++)
                     <option value="{{$i}}">{{$i}}</option>
                 @endfor
                 
